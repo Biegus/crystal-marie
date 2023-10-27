@@ -1,0 +1,70 @@
+*
+function stack_fib
+from_a=0
+temp=0
+a_res=0
+b_res=0
+*
+{
+	pop_into(&from_a)
+	
+	.if(EQ from_a 0)
+	{
+
+		stack_return(0)
+	}
+	.else
+	{	
+		
+	}
+
+	.if(EQ from_a 1)
+	{
+		stack_return(1)
+	}
+	.else
+	{
+		
+	}
+
+
+	sub (from_a 1)
+	storei(return &temp)
+
+	push (from_a)
+	push (-b_1)
+	push (temp)
+
+	stack_fib()
+	.flag(b_1)	
+	storei(return &a_res)
+
+	pop_into(&from_a)
+
+	sub (from_a 2)
+	storei(return &temp)
+
+	push (a_res)
+	push (-b_2)
+	push (temp)
+
+	stack_fib()
+	.flag(b_2)
+	storei(return &b_res)
+
+	pop_into(&a_res)
+
+	add(a_res b_res)
+	stack_return(return)
+
+}
+function main
+*
+{
+	push(-b_1)
+	push(6)
+
+	stack_fib()
+	.flag(b_1)
+	%output
+}

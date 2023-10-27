@@ -1,0 +1,29 @@
+t=0
+*
+stack_function epic a
+x=0
+y=0
+*
+{
+    y = put(1)
+    .if(EQ a 0)
+    {
+      .ret(15)
+    }
+    .else
+    {
+      x=epic(0)  
+      x=add(x 1)
+      x =add(x y)
+      .ret(x)
+    }
+}
+function main
+z=0
+*
+{
+  epic(1)
+  %output
+
+
+}

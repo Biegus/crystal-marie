@@ -1,0 +1,232 @@
+array_ptr=2730
+*
+function div a b
+counter=0
+*
+{
+    %beg, clear
+    .if(LESS a b) 
+    {
+        %load var_div_a
+        %load var_div_counter
+
+    }
+    .else
+    {
+        add (counter 1)
+        %store var_div_counter
+
+        sub (a b)
+        %store var_div_a
+
+        %jump beg
+
+    }
+
+}
+
+function alloc size
+temp=0
+*
+{
+    temp =put(array_ptr)
+    array_ptr=add (array_ptr size)
+    .ret(temp)
+}
+function array_get array_ptr index
+ptr=0
+temp=0
+*
+{
+    ptr = add(array_ptr index)
+    temp = put(*ptr)
+
+}
+function array_set_at array_ptr index val
+ptr=0
+*
+{
+    ptr = add(array_ptr index)
+    copy_into(val ptr)
+}
+function merge a b a_size b_size
+a_i=0
+b_i=0
+res_ptr=0
+res_i=0
+a_out=0
+b_out=0
+sum_size=0
+temp=0
+*
+{
+    sum_size= add(a_size b_size)
+    res_ptr=alloc(sum_size)
+
+    .flag(beg)
+    .if(LESS a_i a_size)
+    {
+        .if(LESS b_i b_size)
+        {
+            a_out = array_get(a a_i) 
+            b_out = array_get(b b_i)
+
+            .if(MORE a_out b_out)
+            {
+                array_set_at(res_ptr res_i b_out)
+                temp= array_get(res_ptr res_i)
+                res_i= add(res_i 1)
+                b_i = add(b_i 1)
+                 %jumpi flag_merge_beg
+            }
+            .else
+            {
+                array_set_at(res_ptr res_i a_out)
+                res_i= add(res_i 1)
+                a_i = add(a_i 1)
+                
+                %jumpi flag_merge_beg
+            }
+        }
+        .else
+        {
+
+            .flag(a_final)
+            .if (LESS a_i a_size)
+            {
+                a_out = array_get(a a_i) 
+                array_set_at(res_ptr res_i a_out)
+                res_i= add(res_i 1)
+                a_i = add(a_i 1)
+                %jumpi flag_merge_a_final
+            }
+            .else
+            {
+            }
+        }
+    }
+    .else
+    {
+
+        .flag(b_final)
+        .if (LESS b_i b_size)
+        {
+            b_out = array_get(b b_i) 
+            array_set_at(res_ptr res_i b_out)
+            res_i= add(res_i 1)
+            b_i = add(b_i 1)
+            %jumpi flag_merge_b_final
+        }
+        .else
+        {
+        }
+    }
+    .ret(res_ptr)
+
+}
+stack_function merge_sort a  a_size
+mid=0
+temp=0
+res_ptr=0
+second_part_ptr=0
+second_part_size=0
+result_a_ptr=0
+result_b_ptr=0
+*
+{
+    
+    .if(EQ a_size 1)
+    {
+        .ret(a)
+    }
+    .else
+    {
+        
+    }
+    .if(EQ a_size 0)
+    {
+        .ret(a)
+    }
+    .else
+    {
+
+    }
+
+    mid = div(a_size 2) 
+    result_a_ptr= merge_sort(a mid) 
+
+    second_part_size = sub(a_size mid)
+    second_part_ptr = add(a mid) 
+    result_b_ptr=merge_sort(second_part_ptr second_part_size)
+
+    merge(result_a_ptr result_b_ptr mid second_part_size) 
+    .ret(return)
+
+
+}
+
+
+function main
+arr_1=0
+arr_2=0
+result_arr=0
+moving_ptr=0
+*
+{
+    
+    arr_1=alloc(3)
+
+
+
+    array_set_at(arr_1 0  29)
+    array_set_at(arr_1 1 3)
+    array_set_at(arr_1 2 1)
+
+    result_arr=merge_sort(arr_1 3)
+
+    moving_ptr=put(result_arr)
+
+    output(*moving_ptr)
+    moving_ptr = add(moving_ptr 1)
+
+    output(*moving_ptr)
+    moving_ptr = add(moving_ptr 1)
+
+    output(*moving_ptr)
+
+
+    %halt
+
+    arr_1=alloc(3)
+
+    array_set_at(arr_1 0  1)
+    array_set_at(arr_1 1 2)
+    array_set_at(arr_1 2 10)
+
+    arr_2=alloc(3)
+
+    array_set_at(arr_2 0 3)
+    array_set_at(arr_2 1 10)
+    array_set_at(arr_2 2 12)
+
+    result_arr=merge(arr_1 arr_2 3 3)
+
+    moving_ptr = put(result_arr)
+
+    output(*moving_ptr)
+    moving_ptr = add(moving_ptr 1)
+
+    output(*moving_ptr)
+    moving_ptr = add(moving_ptr 1)
+
+    output(*moving_ptr)
+    moving_ptr = add(moving_ptr 1)
+
+    output(*moving_ptr)
+    moving_ptr = add(moving_ptr 1)
+
+    output(*moving_ptr)
+    moving_ptr = add(moving_ptr 1)
+
+    output(*moving_ptr)
+}

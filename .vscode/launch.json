@@ -1,0 +1,45 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'crystal-marie'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=crystal-marie",
+                    "--package=crystal-marie"
+                ],
+                "filter": {
+                    "name": "crystal-marie",
+                    "kind": "bin"
+                }
+            },
+            "args": ["bugtest.crmarie","-l","std.crmarie"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'crystal-marie'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=crystal-marie",
+                    "--package=crystal-marie"
+                ],
+                "filter": {
+                    "name": "crystal-marie",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

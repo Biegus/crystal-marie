@@ -1,0 +1,13 @@
+*
+function main
+*
+{
+	.if(EQ 0 0)
+	{
+		pop()
+	}
+	.else
+	{
+
+	}
+}

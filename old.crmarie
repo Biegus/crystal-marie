@@ -1,0 +1,158 @@
+arr_start=1000
+arr_ptr=1000
+t=3
+*
+function put x
+*
+{
+    %load var_put_x
+}
+function readi z_ad
+*
+{
+    %input
+    %storei var_readi_z_ad
+}
+function output a
+*
+{
+    put (a)
+    %output
+}
+function add a b
+*
+{
+	%load var_add_a
+	%add var_add_b
+}
+function sub a b
+*
+{
+	%load var_sub_a
+	%subt var_sub_b
+}
+
+
+function storei value place
+*
+{
+    %load var_storei_value
+    %storei var_storei_place
+}
+function mult a b
+counter=0
+*
+{
+    %beg, clear
+    .if(EQ b 0) 
+    {
+        storei(counter &return)
+        put (counter)
+    }
+    .else
+    {
+        sub (b 1)
+        storei (return &b)
+
+        add (counter a)     
+        storei(return &counter)
+        %jump beg
+
+    }
+
+}
+
+
+function push a
+temp=0
+*
+{
+    storei (a arr_ptr)
+
+    add (1 arr_ptr) 
+    %store var_push_temp
+    storei  (temp &arr_ptr )
+      
+}
+function pop
+temp=0
+*
+{
+    sub (arr_ptr 1) 
+    %store var_pop_temp
+    
+    storei  (temp &arr_ptr )
+
+    put (*arr_ptr)
+}
+function stack_return value
+addr=0
+*
+{
+    pop()
+    storei(return &addr)
+    put (value)
+    %jumpi var_stack_return_addr
+}
+function pop_into addr
+*
+{
+    pop()
+    storei(return addr)
+}
+
+function stack_fact
+val=0
+temp=0
+inner=0
+add=0
+ptr=0
+*
+{
+    val=pop()
+    
+    .if(EQ val 0)
+    {
+        stack_return(1)
+        
+    }
+    .else
+    {
+        push (val)
+
+        temp = sub (val 1)
+
+        push (-back_ptr)  
+        push (temp) 
+
+        output(22)
+        inner = stack_fact()
+        output(inner)
+        .flag(back_ptr)
+    
+        val = pop()
+
+        temp = mult(inner val)
+
+        stack_return(temp)
+              
+    }
+
+
+}
+
+function main
+temp=0
+ptr=0
+*
+{
+
+
+    push(-back_ptr)
+    push(3)
+    stack_fact()
+    .flag(back_ptr)
+    
+    %output
+
+}   

@@ -1,0 +1,855 @@
+jns function_main
+halt
+var__temp, DEC -100
+var_return, DEC -200
+var_return_saver, DEC -300
+var_array_ptr, DEC 2730
+var_stack_ptr, DEC 1792
+var_put_x, DEC -21
+var_output_a, DEC -21
+var_add_a, DEC -21
+var_add_b, DEC -21
+var_sub_a, DEC -21
+var_sub_b, DEC -21
+var_copy_into_value, DEC -21
+var_copy_into_place, DEC -21
+var_push_a, DEC -21
+var_pop_temp, DEC 0
+var_stack_return_value, DEC -21
+var_stack_return_addr, DEC 0
+var_div_a, DEC -21
+var_div_b, DEC -21
+var_div_counter, DEC 0
+var_alloc_size, DEC -21
+var_alloc_temp, DEC 0
+var_array_get_array_ptr, DEC -21
+var_array_get_index, DEC -21
+var_array_get_ptr, DEC 0
+var_array_get_temp, DEC 0
+var_array_set_at_array_ptr, DEC -21
+var_array_set_at_index, DEC -21
+var_array_set_at_val, DEC -21
+var_array_set_at_ptr, DEC 0
+var_merge_a, DEC -21
+var_merge_b, DEC -21
+var_merge_a_size, DEC -21
+var_merge_b_size, DEC -21
+var_merge_a_i, DEC 0
+var_merge_b_i, DEC 0
+var_merge_res_ptr, DEC 0
+var_merge_res_i, DEC 0
+var_merge_a_out, DEC 0
+var_merge_b_out, DEC 0
+var_merge_sum_size, DEC 0
+var_merge_temp, DEC 0
+var_merge_sort_a, DEC -21
+var_merge_sort_a_size, DEC -21
+var_merge_sort_mid, DEC 0
+var_merge_sort_temp, DEC 0
+var_merge_sort_res_ptr, DEC 0
+var_merge_sort_second_part_ptr, DEC 0
+var_merge_sort_second_part_size, DEC 0
+var_merge_sort_result_a_ptr, DEC 0
+var_merge_sort_result_b_ptr, DEC 0
+var_main_arr_1, DEC 0
+var_main_arr_2, DEC 0
+var_main_result_arr, DEC 0
+var_main_moving_ptr, DEC 0
+const_56, DEC 56
+const_48, DEC 48
+const_54, DEC 54
+const_35, DEC 35
+const_45, DEC 45
+const_53, DEC 53
+const_28, DEC 28
+const_51, DEC 51
+const_46, DEC 46
+const_41, DEC 41
+const_10, DEC 10
+const_17, DEC 17
+const_27, DEC 27
+const_15, DEC 15
+const_4096, DEC 4096
+const_38, DEC 38
+const_5, DEC 5
+const_32, DEC 32
+const_3, DEC 3
+const_23, DEC 23
+const_34, DEC 34
+const_44, DEC 44
+const_40, DEC 40
+const_50, DEC 50
+const_14, DEC 14
+const_39, DEC 39
+const_9, DEC 9
+const_24, DEC 24
+const_2, DEC 2
+const_31, DEC 31
+const_12, DEC 12
+const_16, DEC 16
+const_1, DEC 1
+const_47, DEC 47
+const_49, DEC 49
+const_6, DEC 6
+const_11, DEC 11
+const_0, DEC 0
+const_29, DEC 29
+const_55, DEC 55
+const_7, DEC 7
+const_42, DEC 42
+const_37, DEC 37
+const_19, DEC 19
+const_18, DEC 18
+const_25, DEC 25
+const_33, DEC 33
+const_20, DEC 20
+const_22, DEC 22
+const_26, DEC 26
+const_13, DEC 13
+const_52, DEC 52
+const_43, DEC 43
+const_4, DEC 4
+const_21, DEC 21
+const_30, DEC 30
+const_36, DEC 36
+const_8, DEC 8
+function_put,DEC 0
+load var_put_x
+store var_return
+jumpI function_put
+function_output,DEC 0
+load var_output_a
+store var_put_x
+jns function_put
+output
+store var_return
+jumpI function_output
+function_add,DEC 0
+load var_add_a
+add var_add_b
+store var_return
+jumpI function_add
+function_sub,DEC 0
+load var_sub_a
+subt var_sub_b
+store var_return
+jumpI function_sub
+function_copy_into,DEC 0
+load var_copy_into_value
+storei var_copy_into_place
+store var_return
+jumpI function_copy_into
+function_push,DEC 0
+load var_push_a
+store var_copy_into_value
+load var_stack_ptr
+store var_copy_into_place
+jns function_copy_into
+load const_1
+store var_add_a
+load var_stack_ptr
+store var_add_b
+jns function_add
+store var_stack_ptr
+store var_return
+jumpI function_push
+function_pop,DEC 0
+load const_0
+store var_pop_temp
+load var_stack_ptr
+store var_sub_a
+load const_1
+store var_sub_b
+jns function_sub
+store var_stack_ptr
+loadi var_stack_ptr
+store var_put_x
+jns function_put
+store var_pop_temp
+load const_4096
+store var_copy_into_value
+load var_stack_ptr
+store var_copy_into_place
+jns function_copy_into
+load var_pop_temp
+store var_return
+jumpI function_pop
+store var_return
+jumpI function_pop
+function_stack_return,DEC 0
+load const_0
+store var_stack_return_addr
+jns function_pop
+store var_stack_return_addr
+load var_stack_return_value
+store var_put_x
+jns function_put
+jumpi var_stack_return_addr
+store var_return
+jumpI function_stack_return
+function_div,DEC 0
+load const_0
+store var_div_counter
+beg, clear
+load var_div_b
+store var__temp
+load var_div_a
+subt var__temp
+skipcond 0
+jump else_0
+jump if_0
+if_0,load var_div_a
+load var_div_counter
+jump end_if_0
+else_0,store var__temp
+load var_div_counter
+store var_add_a
+load const_1
+store var_add_b
+jns function_add
+store var_div_counter
+load var_div_a
+store var_sub_a
+load var_div_b
+store var_sub_b
+jns function_sub
+store var_div_a
+jump beg
+end_if_0,store var__temp
+store var_return
+jumpI function_div
+function_alloc,DEC 0
+load const_0
+store var_alloc_temp
+load var_array_ptr
+store var_put_x
+jns function_put
+store var_alloc_temp
+load var_array_ptr
+store var_add_a
+load var_alloc_size
+store var_add_b
+jns function_add
+store var_array_ptr
+load var_alloc_temp
+store var_return
+jumpI function_alloc
+store var_return
+jumpI function_alloc
+function_array_get,DEC 0
+load const_0
+store var_array_get_ptr
+load const_0
+store var_array_get_temp
+load var_array_get_array_ptr
+store var_add_a
+load var_array_get_index
+store var_add_b
+jns function_add
+store var_array_get_ptr
+loadi var_array_get_ptr
+store var_put_x
+jns function_put
+store var_array_get_temp
+store var_return
+jumpI function_array_get
+function_array_set_at,DEC 0
+load const_0
+store var_array_set_at_ptr
+load var_array_set_at_array_ptr
+store var_add_a
+load var_array_set_at_index
+store var_add_b
+jns function_add
+store var_array_set_at_ptr
+load var_array_set_at_val
+store var_copy_into_value
+load var_array_set_at_ptr
+store var_copy_into_place
+jns function_copy_into
+store var_return
+jumpI function_array_set_at
+function_merge,DEC 0
+load const_0
+store var_merge_a_i
+load const_0
+store var_merge_b_i
+load const_0
+store var_merge_res_ptr
+load const_0
+store var_merge_res_i
+load const_0
+store var_merge_a_out
+load const_0
+store var_merge_b_out
+load const_0
+store var_merge_sum_size
+load const_0
+store var_merge_temp
+load var_merge_a_size
+store var_add_a
+load var_merge_b_size
+store var_add_b
+jns function_add
+store var_merge_sum_size
+load var_merge_sum_size
+store var_alloc_size
+jns function_alloc
+store var_merge_res_ptr
+load var_merge_a_size
+store var__temp
+load var_merge_a_i
+subt var__temp
+skipcond 0
+jump else_1
+jump if_1
+if_1,load var_merge_b_size
+store var__temp
+load var_merge_b_i
+subt var__temp
+skipcond 0
+jump else_2
+jump if_2
+if_2,load var_merge_a
+store var_array_get_array_ptr
+load var_merge_a_i
+store var_array_get_index
+jns function_array_get
+store var_merge_a_out
+load var_merge_b
+store var_array_get_array_ptr
+load var_merge_b_i
+store var_array_get_index
+jns function_array_get
+store var_merge_b_out
+load var_merge_b_out
+store var__temp
+load var_merge_a_out
+subt var__temp
+skipcond 800
+jump else_3
+jump if_3
+if_3,load var_merge_res_ptr
+store var_array_set_at_array_ptr
+load var_merge_res_i
+store var_array_set_at_index
+load var_merge_b_out
+store var_array_set_at_val
+jns function_array_set_at
+load var_merge_res_ptr
+store var_array_get_array_ptr
+load var_merge_res_i
+store var_array_get_index
+jns function_array_get
+store var_merge_temp
+load var_merge_res_i
+store var_add_a
+load const_1
+store var_add_b
+jns function_add
+store var_merge_res_i
+load var_merge_b_i
+store var_add_a
+load const_1
+store var_add_b
+jns function_add
+store var_merge_b_i
+jumpi flag_merge_beg
+jump end_if_3
+else_3,store var__temp
+load var_merge_res_ptr
+store var_array_set_at_array_ptr
+load var_merge_res_i
+store var_array_set_at_index
+load var_merge_a_out
+store var_array_set_at_val
+jns function_array_set_at
+load var_merge_res_i
+store var_add_a
+load const_1
+store var_add_b
+jns function_add
+store var_merge_res_i
+load var_merge_a_i
+store var_add_a
+load const_1
+store var_add_b
+jns function_add
+store var_merge_a_i
+jumpi flag_merge_beg
+end_if_3,store var__temp
+jump end_if_2
+else_2,store var__temp
+load var_merge_a_size
+store var__temp
+load var_merge_a_i
+subt var__temp
+skipcond 0
+jump else_4
+jump if_4
+if_4,load var_merge_a
+store var_array_get_array_ptr
+load var_merge_a_i
+store var_array_get_index
+jns function_array_get
+store var_merge_a_out
+load var_merge_res_ptr
+store var_array_set_at_array_ptr
+load var_merge_res_i
+store var_array_set_at_index
+load var_merge_a_out
+store var_array_set_at_val
+jns function_array_set_at
+load var_merge_res_i
+store var_add_a
+load const_1
+store var_add_b
+jns function_add
+store var_merge_res_i
+load var_merge_a_i
+store var_add_a
+load const_1
+store var_add_b
+jns function_add
+store var_merge_a_i
+jumpi flag_merge_a_final
+jump end_if_4
+else_4,store var__temp
+end_if_4,store var__temp
+end_if_2,store var__temp
+jump end_if_1
+else_1,store var__temp
+load var_merge_b_size
+store var__temp
+load var_merge_b_i
+subt var__temp
+skipcond 0
+jump else_5
+jump if_5
+if_5,load var_merge_b
+store var_array_get_array_ptr
+load var_merge_b_i
+store var_array_get_index
+jns function_array_get
+store var_merge_b_out
+load var_merge_res_ptr
+store var_array_set_at_array_ptr
+load var_merge_res_i
+store var_array_set_at_index
+load var_merge_b_out
+store var_array_set_at_val
+jns function_array_set_at
+load var_merge_res_i
+store var_add_a
+load const_1
+store var_add_b
+jns function_add
+store var_merge_res_i
+load var_merge_b_i
+store var_add_a
+load const_1
+store var_add_b
+jns function_add
+store var_merge_b_i
+jumpi flag_merge_b_final
+jump end_if_5
+else_5,store var__temp
+end_if_5,store var__temp
+end_if_1,store var__temp
+load var_merge_res_ptr
+store var_return
+jumpI function_merge
+store var_return
+jumpI function_merge
+function_merge_sort,DEC 0
+load const_0
+store var_merge_sort_mid
+load const_0
+store var_merge_sort_temp
+load const_0
+store var_merge_sort_res_ptr
+load const_0
+store var_merge_sort_second_part_ptr
+load const_0
+store var_merge_sort_second_part_size
+load const_0
+store var_merge_sort_result_a_ptr
+load const_0
+store var_merge_sort_result_b_ptr
+jns function_pop
+store var_merge_sort_a_size
+jns function_pop
+store var_merge_sort_a
+load const_1
+store var__temp
+load var_merge_sort_a_size
+subt var__temp
+skipcond 400
+jump else_6
+jump if_6
+if_6,load var_merge_sort_a
+store var_stack_return_value
+jns function_stack_return
+jump end_if_6
+else_6,store var__temp
+end_if_6,store var__temp
+load const_0
+store var__temp
+load var_merge_sort_a_size
+subt var__temp
+skipcond 400
+jump else_7
+jump if_7
+if_7,load var_merge_sort_a
+store var_stack_return_value
+jns function_stack_return
+jump end_if_7
+else_7,store var__temp
+end_if_7,store var__temp
+load var_merge_sort_a_size
+store var_div_a
+load const_2
+store var_div_b
+jns function_div
+store var_merge_sort_mid
+load var_merge_sort_a
+store var_push_a
+jns function_push
+load var_merge_sort_a_size
+store var_push_a
+jns function_push
+load var_merge_sort_mid
+store var_push_a
+jns function_push
+load var_merge_sort_temp
+store var_push_a
+jns function_push
+load var_merge_sort_res_ptr
+store var_push_a
+jns function_push
+load var_merge_sort_second_part_ptr
+store var_push_a
+jns function_push
+load var_merge_sort_second_part_size
+store var_push_a
+jns function_push
+load var_merge_sort_result_a_ptr
+store var_push_a
+jns function_push
+load var_merge_sort_result_b_ptr
+store var_push_a
+jns function_push
+load addr_8
+store var_push_a
+jns function_push
+load var_merge_sort_a
+store var_push_a
+jns function_push
+load var_merge_sort_mid
+store var_push_a
+jns function_push
+jns function_merge_sort
+load var_return
+store var_return_saver
+jns function_pop
+store var_merge_sort_result_b_ptr
+jns function_pop
+store var_merge_sort_result_a_ptr
+jns function_pop
+store var_merge_sort_second_part_size
+jns function_pop
+store var_merge_sort_second_part_ptr
+jns function_pop
+store var_merge_sort_res_ptr
+jns function_pop
+store var_merge_sort_temp
+jns function_pop
+store var_merge_sort_mid
+jns function_pop
+store var_merge_sort_a_size
+jns function_pop
+store var_merge_sort_a
+load var_return_saver
+store var_return
+store var_merge_sort_result_a_ptr
+load var_merge_sort_a_size
+store var_sub_a
+load var_merge_sort_mid
+store var_sub_b
+jns function_sub
+store var_merge_sort_second_part_size
+load var_merge_sort_a
+store var_add_a
+load var_merge_sort_mid
+store var_add_b
+jns function_add
+store var_merge_sort_second_part_ptr
+load var_merge_sort_a
+store var_push_a
+jns function_push
+load var_merge_sort_a_size
+store var_push_a
+jns function_push
+load var_merge_sort_mid
+store var_push_a
+jns function_push
+load var_merge_sort_temp
+store var_push_a
+jns function_push
+load var_merge_sort_res_ptr
+store var_push_a
+jns function_push
+load var_merge_sort_second_part_ptr
+store var_push_a
+jns function_push
+load var_merge_sort_second_part_size
+store var_push_a
+jns function_push
+load var_merge_sort_result_a_ptr
+store var_push_a
+jns function_push
+load var_merge_sort_result_b_ptr
+store var_push_a
+jns function_push
+load addr_9
+store var_push_a
+jns function_push
+load var_merge_sort_second_part_ptr
+store var_push_a
+jns function_push
+load var_merge_sort_second_part_size
+store var_push_a
+jns function_push
+jns function_merge_sort
+load var_return
+store var_return_saver
+jns function_pop
+store var_merge_sort_result_b_ptr
+jns function_pop
+store var_merge_sort_result_a_ptr
+jns function_pop
+store var_merge_sort_second_part_size
+jns function_pop
+store var_merge_sort_second_part_ptr
+jns function_pop
+store var_merge_sort_res_ptr
+jns function_pop
+store var_merge_sort_temp
+jns function_pop
+store var_merge_sort_mid
+jns function_pop
+store var_merge_sort_a_size
+jns function_pop
+store var_merge_sort_a
+load var_return_saver
+store var_return
+store var_merge_sort_result_b_ptr
+load var_merge_sort_result_a_ptr
+store var_merge_a
+load var_merge_sort_result_b_ptr
+store var_merge_b
+load var_merge_sort_mid
+store var_merge_a_size
+load var_merge_sort_second_part_size
+store var_merge_b_size
+jns function_merge
+load var_return
+store var_stack_return_value
+jns function_stack_return
+jns function_pop
+jumpi var_return
+function_main,DEC 0
+load const_0
+store var_main_arr_1
+load const_0
+store var_main_arr_2
+load const_0
+store var_main_result_arr
+load const_0
+store var_main_moving_ptr
+load const_3
+store var_alloc_size
+jns function_alloc
+store var_main_arr_1
+load var_main_arr_1
+store var_array_set_at_array_ptr
+load const_0
+store var_array_set_at_index
+load const_29
+store var_array_set_at_val
+jns function_array_set_at
+load var_main_arr_1
+store var_array_set_at_array_ptr
+load const_1
+store var_array_set_at_index
+load const_3
+store var_array_set_at_val
+jns function_array_set_at
+load var_main_arr_1
+store var_array_set_at_array_ptr
+load const_2
+store var_array_set_at_index
+load const_1
+store var_array_set_at_val
+jns function_array_set_at
+load addr_10
+store var_push_a
+jns function_push
+load var_main_arr_1
+store var_push_a
+jns function_push
+load const_3
+store var_push_a
+jns function_push
+jns function_merge_sort
+load var_return
+store var_return_saver
+load var_return_saver
+store var_return
+store var_main_result_arr
+load var_main_result_arr
+store var_put_x
+jns function_put
+store var_main_moving_ptr
+loadi var_main_moving_ptr
+store var_output_a
+jns function_output
+load var_main_moving_ptr
+store var_add_a
+load const_1
+store var_add_b
+jns function_add
+store var_main_moving_ptr
+loadi var_main_moving_ptr
+store var_output_a
+jns function_output
+load var_main_moving_ptr
+store var_add_a
+load const_1
+store var_add_b
+jns function_add
+store var_main_moving_ptr
+loadi var_main_moving_ptr
+store var_output_a
+jns function_output
+halt
+load const_3
+store var_alloc_size
+jns function_alloc
+store var_main_arr_1
+load var_main_arr_1
+store var_array_set_at_array_ptr
+load const_0
+store var_array_set_at_index
+load const_1
+store var_array_set_at_val
+jns function_array_set_at
+load var_main_arr_1
+store var_array_set_at_array_ptr
+load const_1
+store var_array_set_at_index
+load const_2
+store var_array_set_at_val
+jns function_array_set_at
+load var_main_arr_1
+store var_array_set_at_array_ptr
+load const_2
+store var_array_set_at_index
+load const_10
+store var_array_set_at_val
+jns function_array_set_at
+load const_3
+store var_alloc_size
+jns function_alloc
+store var_main_arr_2
+load var_main_arr_2
+store var_array_set_at_array_ptr
+load const_0
+store var_array_set_at_index
+load const_3
+store var_array_set_at_val
+jns function_array_set_at
+load var_main_arr_2
+store var_array_set_at_array_ptr
+load const_1
+store var_array_set_at_index
+load const_10
+store var_array_set_at_val
+jns function_array_set_at
+load var_main_arr_2
+store var_array_set_at_array_ptr
+load const_2
+store var_array_set_at_index
+load const_12
+store var_array_set_at_val
+jns function_array_set_at
+load var_main_arr_1
+store var_merge_a
+load var_main_arr_2
+store var_merge_b
+load const_3
+store var_merge_a_size
+load const_3
+store var_merge_b_size
+jns function_merge
+store var_main_result_arr
+load var_main_result_arr
+store var_put_x
+jns function_put
+store var_main_moving_ptr
+loadi var_main_moving_ptr
+store var_output_a
+jns function_output
+load var_main_moving_ptr
+store var_add_a
+load const_1
+store var_add_b
+jns function_add
+store var_main_moving_ptr
+loadi var_main_moving_ptr
+store var_output_a
+jns function_output
+load var_main_moving_ptr
+store var_add_a
+load const_1
+store var_add_b
+jns function_add
+store var_main_moving_ptr
+loadi var_main_moving_ptr
+store var_output_a
+jns function_output
+load var_main_moving_ptr
+store var_add_a
+load const_1
+store var_add_b
+jns function_add
+store var_main_moving_ptr
+loadi var_main_moving_ptr
+store var_output_a
+jns function_output
+load var_main_moving_ptr
+store var_add_a
+load const_1
+store var_add_b
+jns function_add
+store var_main_moving_ptr
+loadi var_main_moving_ptr
+store var_output_a
+jns function_output
+load var_main_moving_ptr
+store var_add_a
+load const_1
+store var_add_b
+jns function_add
+store var_main_moving_ptr
+loadi var_main_moving_ptr
+store var_output_a
+jns function_output
+store var_return
+jumpI function_main
+flag_merge_beg, dec 298
+flag_merge_a_final, dec 382
+flag_merge_b_final, dec 421
+addr_8, dec 551
+addr_9, dec 623
+addr_10, dec 704
