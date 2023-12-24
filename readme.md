@@ -17,14 +17,14 @@ download release https://github.com/Biegus/crystal-marie/releases/tag/0.9
 (if you want to build binaries yourself look at *Builing Compiler*)
 
 ```shell
-crystal-marie.exe file.crmarie     
+crystal-marie file.crmarie     
 ```
 *for linux release just strip the .exe from name*  
 
 ### Optional arguments
 
 **`-l libfile.crmarie`**  
-Include lib (you can include multiple files, order matters) 
+Include lib (you can include multiple files, order matters)  
 note: in case of error in lib file, the line of error will be incorrect (something negative) 
 
 note: Its recommended to include std.crmarie as lib file (its in main repo folder or in any release)   
