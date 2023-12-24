@@ -5,13 +5,9 @@ use crate::{
         VariableId, VariableType,
     },
     string_builder::Builder,
-    utility::StringExtension,
 };
 
-use std::{
-    collections::{HashMap, HashSet},
-    process::exit,
-};
+use std::collections::{HashMap, HashSet};
 #[derive(Default)]
 pub struct CompilerContext {
     address_map: HashMap<VariableId, usize>,
@@ -29,7 +25,7 @@ impl CompilerContext {
 pub fn var_decl_text(t: &Variable, tree: &ProgramTree) -> String {
     return format!("{}, DEC {}", get_var_text(t, tree), t.default_value);
 }
-pub fn constant_decl_text(t: i32, tree: &ProgramTree) -> String {
+pub fn constant_decl_text(t: i32) -> String {
     return format!("const_{t}, DEC {t}");
 }
 pub fn get_var_text(t: &Variable, tree: &ProgramTree) -> String {
@@ -102,7 +98,7 @@ pub fn compile_variables(context: &mut CompilerContext, count: usize) -> String 
     let mut constants_vector: Vec<_> = all_constants.iter().collect();
     constants_vector.sort();
     for el in &constants_vector {
-        builder.push_line_smart(&constant_decl_text(**el, &context.tree));
+        builder.push_line_smart(&constant_decl_text(**el));
     }
 
     //global variables
@@ -139,7 +135,7 @@ pub fn compile_simple(
             let fnc = context.tree.get_fnc(ret.fnc);
             return Some(get_function_return_text(fnc, ret.ret_val.as_ref(), context));
         }
-        Statement::Inline(inline) => (Some((inline.clone().trim().into()))),
+        Statement::Inline(inline) => Some(inline.clone().trim().into()),
         Statement::FunctionCall(call) => {
             let fnc = context.tree.get_fnc(call.fnc_id);
             match fnc.is_stack {
@@ -272,7 +268,7 @@ pub fn compile_advance(
             return Some("".to_owned());
         }
         Statement::If(If {
-            a: A,
+            a,
             b,
             if_true,
             if_false: else_block,
@@ -301,7 +297,7 @@ pub fn compile_advance(
 
             // acc = a-b
             builder.push_line_smart(&get_set_from_arg(context.tree.get_temp_var(), b, &context));
-            builder.push_line_smart(&get_load_from_arg_text(A, &context));
+            builder.push_line_smart(&get_load_from_arg_text(a, &context));
             builder.push_line_smart("subt var__temp");
 
             builder.push_line_smart(&("skipcond ".to_owned() + cond_number.to_string().as_str()));

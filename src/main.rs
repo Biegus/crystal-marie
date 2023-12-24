@@ -1,9 +1,6 @@
-use core::fmt;
-use std::{collections::HashSet, convert::Infallible, env, fs, path::Display, process::exit};
+use std::{env, fs, process::exit};
 
-use argument_parser::ArgumentMapping;
 use config::OutputMethod;
-use lib_handler::merge_single;
 
 mod argument_parser;
 mod compiler;
@@ -43,17 +40,6 @@ fn main() {
 
     //push the lib at the beginning
     let mut main_code = code.unwrap();
-    let lib_code: Result<Vec<_>, _> = arguments
-        .lib
-        .iter()
-        .map(|e| (fs::read_to_string(e.trim()).map(|content| (content, e.clone()))))
-        .collect();
-
-    if let Err(error) = lib_code {
-        eprintln!("lib couldn't be loaded:{} ", error);
-        exit(1);
-    }
-    let lib_code = lib_code.unwrap();
 
     let mut line_dif = 1; // its one cause its hacky way to avoid it getting in the way if not used
 

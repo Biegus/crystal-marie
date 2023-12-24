@@ -1,5 +1,3 @@
-use crate::parser::ProgramTree;
-
 pub fn merge(code: &str, lib_codes: &Vec<&str>) -> String {
     let all_lib: String = lib_codes
         .iter()

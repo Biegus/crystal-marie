@@ -1,9 +1,4 @@
-use crate::lexer::TokenLine;
-use easy_ext::ext;
-use std::{
-    fmt::{Debug, Display},
-    iter::*,
-};
+use std::fmt::{Debug, Display};
 
 pub enum AString<'a> {
     String(String),
@@ -104,7 +99,7 @@ pub struct SingleStepH;
 
 impl SingleStepH {
     pub fn deliver<T, E>(val: T, after: usize) -> SingleStep<T, E> {
-        return Ok((SuccessStep::new(val, after)));
+        return Ok(SuccessStep::new(val, after));
     }
 }
 
@@ -200,4 +195,3 @@ pub impl<T, E> Result<Option<T>, E> {
         return self.map(|e| e.map(f));
     }
 }
-

@@ -371,9 +371,8 @@ fn parse_function_call_if_present(
             arguments_got.len()
         ));
     }
-    if (function.is_stack && (!context.cur_function.is_stack && !is_main(context.cur_function))) {
-        return Err((
-            format!("Can't 'call {} from {}. Stack function can be called only from other stack functions or from main",function.name,context.cur_function.name)));
+    if function.is_stack && (!context.cur_function.is_stack && !is_main(context.cur_function)) {
+        return Err(format!("Can't 'call {} from {}. Stack function can be called only from other stack functions or from main",function.name,context.cur_function.name));
     }
     return Ok(Some(FunctionCall::new(
         function.id,
@@ -852,4 +851,3 @@ pub fn parse(tokens: &[TokenLine]) -> ParserResult<ProgramTree> {
     check_features(&tree).map_err(|e| ParserError::general(e))?;
     return Ok(tree);
 }
-

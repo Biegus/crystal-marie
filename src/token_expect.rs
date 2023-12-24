@@ -5,7 +5,7 @@ use std::{
 
 use crate::{
     lexer::{Symbol, Token},
-    string_builder::{self, Builder},
+    string_builder::{self},
 };
 
 pub fn check_add(add: &[(Token, usize)], tokens: &[Token]) -> bool {

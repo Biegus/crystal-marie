@@ -1,5 +1,3 @@
-use std::collections::{BTreeSet, HashSet};
-
 use crate::argument_parser::{self, ArgumentMapping};
 
 pub enum OutputMethod {
