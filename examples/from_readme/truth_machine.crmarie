@@ -1,0 +1,17 @@
+*
+function main
+x=0                             // local variable that will hold the input
+*
+{
+    x=input()      
+    .if (EQ x 0)                //non functions operand start with "." if x==0
+    {
+        output(0)               // this code happens if x==0
+    }
+    .else
+    {
+        .flag(beg)              // defines labels, the name is local to the function
+        output(1)            
+        %jump main_flag_beg     // % does inline marie assembly
+    }
+}

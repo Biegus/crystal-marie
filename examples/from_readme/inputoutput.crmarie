@@ -1,0 +1,9 @@
+*                   // * star means end of global variable list 
+function main       // every program stars with main function
+x=0                 // local variables  (those are NOT args)
+*                   // end of local variables list
+{                   // block codes and functions start and end with braces
+    x=input()       // calls a function and puts return value into x
+    output(x)       // calls a function with local variable
+}                   // end of function
+

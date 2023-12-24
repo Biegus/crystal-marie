@@ -1,0 +1,89 @@
+cache_ptr=3000
+*
+function array_get  index
+ptr=0
+*
+{
+    ptr = add(cache_ptr index)
+    .ret(*ptr) 
+
+}
+function array_set_at  index val
+ptr=0
+*
+{
+    ptr = add(cache_ptr index)
+    copy_into(val ptr)
+}
+stack_function fib n
+a_input=0
+b_input=0
+a_res=0
+b_res=0
+temp=0
+*
+{
+
+
+
+    .if(EQ n 0)
+    {
+        .ret(0)
+    }
+    .else
+    {
+        .if(EQ n 1)
+        {
+            .ret(1)
+        }
+        .noelse
+    }
+
+    temp = array_get(n)
+    .if(EQ temp 0)
+    {
+
+    }
+    .else
+    {
+        .ret(temp)
+    }
+    
+    a_input = sub (n 1)
+    b_input = sub (n 2)
+
+    a_res= fib(a_input)
+   
+    b_res = fib(b_input)
+
+    temp=add(a_res b_res)
+    array_set_at(n temp)
+    .ret(temp)
+
+}
+
+function set_all val am
+i=0
+*
+{
+    .flag(beg)
+    .if (LESS i am)
+    {
+        array_set_at(i val)
+        i= add(i 1)
+        %jumpi flag_set_all_beg
+    }
+    .noelse
+}
+
+function main
+inp=0
+*
+{
+
+    inp =input()
+    fib(inp)
+
+    output(return)
+
+}

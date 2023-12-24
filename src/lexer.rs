@@ -5,20 +5,25 @@ use crate::lexer::Token::*;
 pub enum Symbol {
     Asterix,
     Equal,
+    Colon,
     Comma,
     ParenthesisOpen,
     ParenthesisClose,
     BraceOpen,
     BraceClose,
     Dot,
-    Percent,
     Ampersand,
     Minus,
 }
 #[derive(Debug, PartialEq, Clone)]
 pub struct Inline(pub String);
-#[derive(Debug, PartialEq, Clone)]
-pub struct Comment(String);
+
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub enum ConditionKind {
+    Eq,
+    Less,
+    More,
+}
 
 #[derive(Debug, PartialEq, Clone)]
 #[enum_unwrapper::unique_try_froms()]
@@ -27,7 +32,7 @@ pub enum Token {
     Label(String),
     Number(i32),
     Inline(Inline),
-    Comment(Comment),
+    CondKind(ConditionKind),
 }
 
 #[derive(Debug, PartialEq, Clone, derive_new::new)]
@@ -43,6 +48,9 @@ impl TokenLine {
     }
 }
 impl Token {
+    pub fn m_label(t: &str) -> Token {
+        return Token::Label(t.to_owned());
+    }
     pub fn t_inline(t: String) -> Token {
         return Token::Inline(Inline(t));
     }
@@ -52,12 +60,15 @@ impl Token {
         }
         return false;
     }
-    pub fn t_comment(t: String) -> Token {
-        return Token::Comment(Comment(t));
-    }
     pub fn to_label(&self) -> Option<String> {
         if let Label(label) = self {
             return Some(label.clone());
+        }
+        return None;
+    }
+    pub fn to_cond(&self) -> Option<ConditionKind> {
+        if let CondKind(kind) = self {
+            return Some(*kind);
         }
         return None;
     }
@@ -75,19 +86,42 @@ fn char_character_as_symbol(ch: char) -> Option<Symbol> {
         '.' => Some(Symbol::Dot),
         '&' => Some(Symbol::Ampersand),
         '-' => Some(Symbol::Minus),
+        ':' => Some(Symbol::Colon),
         _ => None,
     };
 }
 fn is_simple_number(chr: char) -> bool {
     return chr >= '0' && chr <= '9';
 }
+fn char_array_starts_with(t: &[char], pattern: &str) -> bool {
+    let pattern_ar: Vec<_> = pattern.chars().collect();
+    if pattern_ar.len() > t.len() {
+        return false;
+    }
+    return (0..pattern_ar.len()).all(|i| pattern_ar[i] == t[i]);
+}
 fn tokenize_next(mut t: &[char]) -> Option<(Token, &[char])> {
     while t.len() > 0 && t[0].is_whitespace() {
         t = &t[1..];
     }
+
+    if t.len() >= 2 && t[0] == '/' && t[1] == '/' {
+        return None;
+    }
     if t.len() == 0 {
         return None;
     }
+
+    if char_array_starts_with(t, "EQ") {
+        return Some((Token::CondKind(ConditionKind::Eq), &t[2..]));
+    }
+    if char_array_starts_with(t, "LESS") {
+        return Some((Token::CondKind(ConditionKind::Less), &t[4..]));
+    }
+    if char_array_starts_with(t, "MORE") {
+        return Some((Token::CondKind(ConditionKind::More), &t[4..]));
+    }
+
     let simple_token = char_character_as_symbol(t[0]).map(|el| Token::Symbol(el));
     if let Some(val) = simple_token {
         return Some((val, &t[1..]));
@@ -129,9 +163,6 @@ pub fn tokenize_line(t: &str) -> Vec<Token> {
     if chrs[0] == '%' {
         return vec![Token::t_inline(t[1..].to_owned())];
     }
-    if chrs[0] == '/' && chrs[1] == '/' {
-        return vec![Token::t_comment(t[1..].to_owned())];
-    }
     let mut ptr: &[char] = chrs.as_slice();
     let mut tokens: Vec<Token> = Vec::new();
     loop {
@@ -158,6 +189,10 @@ pub fn tokenize(t: &str) -> Vec<TokenLine> {
         }
         let tokens = tokenize_line(line);
         let token_line = TokenLine::new(tokens, line.to_owned(), i);
+        if token_line.elements.len() == 0 {
+            continue;
+        }
+
         token_lines.push(token_line);
     }
     return token_lines;

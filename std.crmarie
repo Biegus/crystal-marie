@@ -1,15 +1,15 @@
 stack_ptr=1792
 *
-function put x
-*
-{
-    %load var_put_x
-}
 function output a
 *
 {
-    put (a)
+    %load var_output_a
     %output
+}
+function input
+*
+{
+    %input
 }
 function add a b
 *
@@ -30,6 +30,11 @@ function copy_into value place
     %load var_copy_into_value
     %storei var_copy_into_place
 }
+function halt
+*
+{
+    %halt
+}
 function push a
 *
 {
@@ -42,16 +47,17 @@ temp=0
 *
 {
     stack_ptr = sub (stack_ptr 1) 
-    temp = put (*stack_ptr) 
+    temp :=  *stack_ptr 
     copy_into(4096 stack_ptr)
     .ret(temp)
-
 }
 function stack_return value
 addr=0
 *
 {
     addr=pop()
-    put (value)
+    return:= value
+
     %jumpi var_stack_return_addr
 }
+

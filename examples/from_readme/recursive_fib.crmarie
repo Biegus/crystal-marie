@@ -1,0 +1,50 @@
+*
+//resurive functions has to be marked as "stack_function" 
+//they will use stack instead of simple function assignments and jump
+//stack function can be called only from
+//other stack functions or from main
+stack_function fib x  //x is the function argument
+x_prev_1=0  
+x_prev_2=0
+x_res_1=0
+x_res_2=0
+temp=0
+*
+{
+    .if(EQ x 0)
+    {
+        .ret(0)                 // returns given value and exits function
+    }
+    .noelse // this can be written instead of else clause
+
+    .if(EQ x 1)
+    {
+        .ret(1)
+    }
+    .noelse
+
+    x_prev_1 = sub(x 1)
+    x_prev_2 = sub(x 2)
+
+    x_res_1 = fib(x_prev_1)
+    x_res_2 = fib(x_prev_2)
+
+    temp = add(x_res_1 x_res_2)  //notice no commas in function call
+    .ret(temp)
+
+    //having to have temp can be avoided by writing
+    //return = add(x_res_1 x_res_2)  
+    //be careful assignment to the return variable is guaranteed
+    //to work only if next line ends function  
+
+}
+function main
+x=0
+temp=0
+*
+{
+    x=input()
+    temp=fib(x)
+    output(x)
+
+}

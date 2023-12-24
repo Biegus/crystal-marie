@@ -1,9 +1,11 @@
 use crate::{
+    lexer::ConditionKind,
     parser::{
-        ArgumentCallArg, ConditionType, Function, FunctionCall, FunctionId, If, ProgramTree,
-        Statement, Variable, VariableId, VariableType,
+        ArgumentCallArg, Function, FunctionCall, FunctionId, If, ProgramTree, Statement, Variable,
+        VariableId, VariableType,
     },
     string_builder::Builder,
+    utility::StringExtension,
 };
 
 use std::{
@@ -90,8 +92,20 @@ fn get_set_var_to_other_text(var: &Variable, value: &Variable, tree: &ProgramTre
 }
 
 pub fn compile_variables(context: &mut CompilerContext, count: usize) -> String {
-    //TODO looks bad
     let mut builder = Builder::new();
+    //handling constants
+    //todo the whole handling of constants here is prety dirty
+    let mut all_constants = HashSet::new();
+    all_constants.extend(context.tree.constants_used.clone());
+    let v: Vec<i32> = context.address_map.iter().map(|e| *e.1 as i32).collect();
+    all_constants.extend(v);
+    let mut constants_vector: Vec<_> = all_constants.iter().collect();
+    constants_vector.sort();
+    for el in &constants_vector {
+        builder.push_line_smart(&constant_decl_text(**el, &context.tree));
+    }
+
+    //global variables
     for el in &context.tree.globals {
         builder.push_line_smart(&var_decl_text(&el, &context.tree));
         context
@@ -99,6 +113,7 @@ pub fn compile_variables(context: &mut CompilerContext, count: usize) -> String 
             .insert(el.id, builder.count() + count - 1);
     }
 
+    //local variables
     for fnc in &context.tree.functions {
         for el in &fnc.locals {
             builder.push_line_smart(&var_decl_text(&el, &context.tree));
@@ -108,13 +123,6 @@ pub fn compile_variables(context: &mut CompilerContext, count: usize) -> String 
         }
     }
 
-    let mut all_constants = HashSet::new();
-    all_constants.extend(context.tree.constants_used.clone());
-    let v: Vec<i32> = context.address_map.iter().map(|e| *e.1 as i32).collect();
-    all_constants.extend(v);
-    for el in &all_constants {
-        builder.push_line_smart(&constant_decl_text(*el, &context.tree));
-    }
     return builder.collapse_flat();
 }
 
@@ -138,6 +146,13 @@ pub fn compile_simple(
                 false => return Some(get_normal_function_call_text(call, context)),
                 true => return Some(get_stack_function_call_text(call, context, lines)),
             }
+        }
+        Statement::Assignment(ass) => {
+            return Some(get_set_from_arg(
+                context.tree.get_var(ass.left),
+                &ass.right,
+                &context,
+            ));
         }
         _ => None,
     }
@@ -258,37 +273,58 @@ pub fn compile_advance(
         }
         Statement::If(If {
             a: A,
-            b: B,
+            b,
             if_true,
-            if_false,
+            if_false: else_block,
             cond,
         }) => {
             //TODO THIS IS HELL
             let mut builder = Builder::new();
             let cond_number = match cond {
-                ConditionType::Equal => 400,
-                ConditionType::Less => 000,
-                ConditionType::More => 800,
+                ConditionKind::Eq => 400,
+                ConditionKind::Less => 000,
+                ConditionKind::More => 800,
             };
-            builder.push_line_smart(&get_set_from_arg(context.tree.get_temp_var(), B, &context));
+            let contains_else = else_block.is_some();
+            let counter = context.push_counter();
+
+            let jump_end_if = format!("jump end_if_{}", counter);
+            let jump_else = format!("jump else_{counter}");
+
+            let jump_if_not = if contains_else {
+                jump_else.as_ref()
+            } else {
+                jump_end_if.as_ref()
+            };
+
+            let jump_if_ok = format!("jump if_{}", counter);
+
+            // acc = a-b
+            builder.push_line_smart(&get_set_from_arg(context.tree.get_temp_var(), b, &context));
             builder.push_line_smart(&get_load_from_arg_text(A, &context));
             builder.push_line_smart("subt var__temp");
+
             builder.push_line_smart(&("skipcond ".to_owned() + cond_number.to_string().as_str()));
-            let counter = context.push_counter();
-            builder.push_line_smart(&format!("jump else_{}", counter));
-            builder.push_line_smart(&format!("jump if_{}", counter));
 
-            builder.push(&format!("if_{},", counter));
+            //if else is not present will jump to end_if
+            builder.push_line_smart(&jump_if_not);
+            builder.push_line_smart(&jump_if_ok);
+
+            builder.push_line_smart(&format!("if_{},store var__temp", counter));
             builder.push_line_smart(&compile_block(if_true, context, line + builder.count(), id));
-            builder.push_line_smart(&format!("jump end_if_{}", counter));
 
-            builder.push_line_smart(&format!("else_{},store var__temp", counter));
-            builder.push_line_smart(&compile_block(
-                if_false,
-                context,
-                line + builder.count(),
-                id,
-            ));
+            if contains_else {
+                //we only need that if "else" is present, otherwise "endif" block is right after the end of "if" bloc
+                builder.push_line_smart(jump_end_if.as_ref());
+
+                builder.push_line_smart(&format!("else_{},store var__temp", counter));
+                builder.push_line_smart(&compile_block(
+                    else_block.as_ref().unwrap(),
+                    context,
+                    line + builder.count(),
+                    id,
+                ));
+            }
 
             builder.push_line_smart(&format!("end_if_{},store var__temp", counter));
             return Some(builder.collapse_flat());
@@ -408,6 +444,25 @@ pub fn compile_block(
     return t;
 }
 
+fn compile_lower_kind_variables(context: &CompilerContext) -> String {
+    let mut builder = Builder::new();
+    for el in &context.flags {
+        builder.push_line_smart(format!("flag_{}, dec {}", el.0, el.1).as_str());
+    }
+    for el in &context.addrs {
+        let counter = el.0;
+        let val = el.1;
+        builder.push_line_smart(format!("addr_{}, dec {}", counter, val).as_str());
+    }
+    return builder.collapse_flat();
+}
+
+///
+/// Last compilation step, compiles programtree to .marie code
+///
+///the tree outputed from "parser" as OK is always assumed to be program that's correct.
+///Thats why this function never outpus an error.
+///If this funciton panic it means either the tree was not from parser or parser has errors in its code
 pub fn compile(tree: ProgramTree) -> String {
     let mut builder = Builder::new();
     let mut context = CompilerContext::default();
@@ -422,18 +477,5 @@ pub fn compile(tree: ProgramTree) -> String {
         builder.push_line_smart(&compile_function(fnc, &mut context, builder.count()));
     }
     builder.push_line_smart(&compile_lower_kind_variables(&context));
-    return builder.collapse_flat();
-}
-
-fn compile_lower_kind_variables(context: &CompilerContext) -> String {
-    let mut builder = Builder::new();
-    for el in &context.flags {
-        builder.push_line_smart(format!("flag_{}, dec {}", el.0, el.1).as_str());
-    }
-    for el in &context.addrs {
-        let counter = el.0;
-        let val = el.1;
-        builder.push_line_smart(format!("addr_{}, dec {}", counter, val).as_str());
-    }
     return builder.collapse_flat();
 }

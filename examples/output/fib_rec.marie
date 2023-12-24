@@ -1,0 +1,270 @@
+jns function_main
+halt
+const_0, DEC 0
+const_1, DEC 1
+const_2, DEC 2
+const_4096, DEC 4096
+var__temp, DEC -100
+var_return, DEC -200
+var_return_saver, DEC -300
+var_stack_ptr, DEC 1792
+var_output_a, DEC -21
+var_add_a, DEC -21
+var_add_b, DEC -21
+var_sub_a, DEC -21
+var_sub_b, DEC -21
+var_copy_into_value, DEC -21
+var_copy_into_place, DEC -21
+var_push_a, DEC -21
+var_pop_temp, DEC 0
+var_stack_return_value, DEC -21
+var_stack_return_addr, DEC 0
+var_fib_n, DEC -21
+var_fib_a_input, DEC 0
+var_fib_b_input, DEC 0
+var_fib_a_res, DEC 0
+var_fib_b_res, DEC 0
+var_fib_temp, DEC 0
+var_main_inp, DEC 0
+function_output,DEC 0
+load var_output_a
+output
+store var_return
+jumpI function_output
+function_input,DEC 0
+input
+store var_return
+jumpI function_input
+function_add,DEC 0
+load var_add_a
+add var_add_b
+store var_return
+jumpI function_add
+function_sub,DEC 0
+load var_sub_a
+subt var_sub_b
+store var_return
+jumpI function_sub
+function_copy_into,DEC 0
+load var_copy_into_value
+storei var_copy_into_place
+store var_return
+jumpI function_copy_into
+function_halt,DEC 0
+halt
+store var_return
+jumpI function_halt
+function_push,DEC 0
+load var_push_a
+store var_copy_into_value
+load var_stack_ptr
+store var_copy_into_place
+jns function_copy_into
+load const_1
+store var_add_a
+load var_stack_ptr
+store var_add_b
+jns function_add
+store var_stack_ptr
+store var_return
+jumpI function_push
+function_pop,DEC 0
+load const_0
+store var_pop_temp
+load var_stack_ptr
+store var_sub_a
+load const_1
+store var_sub_b
+jns function_sub
+store var_stack_ptr
+loadi var_stack_ptr
+store var_pop_temp
+load const_4096
+store var_copy_into_value
+load var_stack_ptr
+store var_copy_into_place
+jns function_copy_into
+load var_pop_temp
+store var_return
+jumpI function_pop
+store var_return
+jumpI function_pop
+function_stack_return,DEC 0
+load const_0
+store var_stack_return_addr
+jns function_pop
+store var_stack_return_addr
+load var_stack_return_value
+store var_return
+jumpi var_stack_return_addr
+store var_return
+jumpI function_stack_return
+function_fib,DEC 0
+load const_0
+store var_fib_a_input
+load const_0
+store var_fib_b_input
+load const_0
+store var_fib_a_res
+load const_0
+store var_fib_b_res
+load const_0
+store var_fib_temp
+jns function_pop
+store var_fib_n
+load const_0
+store var__temp
+load var_fib_n
+subt var__temp
+skipcond 400
+jump else_0
+jump if_0
+if_0,store var__temp
+load const_0
+store var_stack_return_value
+jns function_stack_return
+jump end_if_0
+else_0,store var__temp
+load const_1
+store var__temp
+load var_fib_n
+subt var__temp
+skipcond 400
+jump end_if_1
+jump if_1
+if_1,store var__temp
+load const_1
+store var_stack_return_value
+jns function_stack_return
+end_if_1,store var__temp
+end_if_0,store var__temp
+load var_fib_n
+store var_sub_a
+load const_1
+store var_sub_b
+jns function_sub
+store var_fib_a_input
+load var_fib_n
+store var_sub_a
+load const_2
+store var_sub_b
+jns function_sub
+store var_fib_b_input
+load var_fib_n
+store var_push_a
+jns function_push
+load var_fib_a_input
+store var_push_a
+jns function_push
+load var_fib_b_input
+store var_push_a
+jns function_push
+load var_fib_a_res
+store var_push_a
+jns function_push
+load var_fib_b_res
+store var_push_a
+jns function_push
+load var_fib_temp
+store var_push_a
+jns function_push
+load addr_2
+store var_push_a
+jns function_push
+load var_fib_a_input
+store var_push_a
+jns function_push
+jns function_fib
+load var_return
+store var_return_saver
+jns function_pop
+store var_fib_temp
+jns function_pop
+store var_fib_b_res
+jns function_pop
+store var_fib_a_res
+jns function_pop
+store var_fib_b_input
+jns function_pop
+store var_fib_a_input
+jns function_pop
+store var_fib_n
+load var_return_saver
+store var_return
+store var_fib_a_res
+load var_fib_n
+store var_push_a
+jns function_push
+load var_fib_a_input
+store var_push_a
+jns function_push
+load var_fib_b_input
+store var_push_a
+jns function_push
+load var_fib_a_res
+store var_push_a
+jns function_push
+load var_fib_b_res
+store var_push_a
+jns function_push
+load var_fib_temp
+store var_push_a
+jns function_push
+load addr_3
+store var_push_a
+jns function_push
+load var_fib_b_input
+store var_push_a
+jns function_push
+jns function_fib
+load var_return
+store var_return_saver
+jns function_pop
+store var_fib_temp
+jns function_pop
+store var_fib_b_res
+jns function_pop
+store var_fib_a_res
+jns function_pop
+store var_fib_b_input
+jns function_pop
+store var_fib_a_input
+jns function_pop
+store var_fib_n
+load var_return_saver
+store var_return
+store var_fib_b_res
+load var_fib_a_res
+store var_add_a
+load var_fib_b_res
+store var_add_b
+jns function_add
+load var_return
+store var_stack_return_value
+jns function_stack_return
+jns function_pop
+jumpi var_return
+function_main,DEC 0
+load const_0
+store var_main_inp
+jns function_input
+store var_main_inp
+load addr_4
+store var_push_a
+jns function_push
+load var_main_inp
+store var_push_a
+jns function_push
+jns function_fib
+load var_return
+store var_return_saver
+load var_return_saver
+store var_return
+load var_return
+store var_output_a
+jns function_output
+store var_return
+jumpI function_main
+addr_2, dec 177
+addr_3, dec 219
+addr_4, dec 258

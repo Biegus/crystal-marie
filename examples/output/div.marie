@@ -1,0 +1,91 @@
+jns function_main
+halt
+const_0, DEC 0
+const_1, DEC 1
+var__temp, DEC -100
+var_return, DEC -200
+var_return_saver, DEC -300
+var_remainder, DEC 0
+var_add_a, DEC -21
+var_add_b, DEC -21
+var_sub_a, DEC -21
+var_sub_b, DEC -21
+var_div_a, DEC -21
+var_div_b, DEC -21
+var_div_counter, DEC 0
+var_main_x, DEC 0
+var_main_y, DEC 0
+function_add,DEC 0
+load var_add_a
+add var_add_b
+store var_return
+jumpI function_add
+function_sub,DEC 0
+load var_sub_a
+subt var_sub_b
+store var_return
+jumpI function_sub
+function_div,DEC 0
+load const_0
+store var_div_counter
+beg, clear
+load var_div_b
+store var__temp
+load var_div_a
+subt var__temp
+skipcond 0
+jump else_0
+jump if_0
+if_0,store var__temp
+load var_div_a
+store var_remainder
+load var_div_counter
+store var_return
+jumpI function_div
+jump end_if_0
+else_0,store var__temp
+load var_div_counter
+store var_add_a
+load const_1
+store var_add_b
+jns function_add
+store var_div_counter
+load var_div_a
+store var_sub_a
+load var_div_b
+store var_sub_b
+jns function_sub
+store var_div_a
+jump beg
+end_if_0,store var__temp
+store var_return
+jumpI function_div
+function_main,DEC 0
+load const_0
+store var_main_x
+load const_0
+store var_main_y
+input
+store var_main_x
+input
+store var_main_y
+load const_0
+store var__temp
+load var_main_y
+subt var__temp
+skipcond 400
+jump end_if_1
+jump if_1
+if_1,store var__temp
+halt
+end_if_1,store var__temp
+load var_main_x
+store var_div_a
+load var_main_y
+store var_div_b
+jns function_div
+output
+load var_remainder
+output
+store var_return
+jumpI function_main

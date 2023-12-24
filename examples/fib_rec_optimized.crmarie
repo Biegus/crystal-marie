@@ -6,30 +6,22 @@ a_res=0
 b_res=0
 *
 {
-	pop_into(&from_a)
+	from_a = pop()
 	
 	.if(EQ from_a 0)
 	{
-
 		stack_return(0)
 	}
-	.else
-	{	
-		
-	}
+	.noelse
 
 	.if(EQ from_a 1)
 	{
 		stack_return(1)
 	}
-	.else
-	{
-		
-	}
+	.noelse
 
 
-	sub (from_a 1)
-	storei(return &temp)
+	temp=sub (from_a 1)
 
 	push (from_a)
 	push (-b_1)
@@ -37,12 +29,11 @@ b_res=0
 
 	stack_fib()
 	.flag(b_1)	
-	storei(return &a_res)
+	a_res := return
 
-	pop_into(&from_a)
+	from_a=pop()
 
-	sub (from_a 2)
-	storei(return &temp)
+	temp=sub (from_a 2)
 
 	push (a_res)
 	push (-b_2)
@@ -50,19 +41,21 @@ b_res=0
 
 	stack_fib()
 	.flag(b_2)
-	storei(return &b_res)
+	b_res := return
 
-	pop_into(&a_res)
+	a_res= pop()
 
 	add(a_res b_res)
 	stack_return(return)
 
 }
 function main
+in=0
 *
 {
 	push(-b_1)
-	push(6)
+	in = input()
+	push(in)
 
 	stack_fib()
 	.flag(b_1)

@@ -1,5 +1,6 @@
 use std::fmt::Display;
 
+
 pub fn push(builder: &mut Vec<char>, v: &str) {
     builder.extend_from_slice(v.chars().collect::<Vec<char>>().as_slice());
 }

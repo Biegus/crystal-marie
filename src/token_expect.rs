@@ -23,6 +23,7 @@ pub enum TokenReq {
     Label,
     Number,
     Any,
+    Inline,
     None,
 }
 pub enum IndexReq {
@@ -51,6 +52,7 @@ impl Display for TokenReq {
             TokenReq::Number => format!("any number"),
             TokenReq::Any => format!("anything"),
             TokenReq::None => format!("nothing"),
+            TokenReq::Inline => format!("inline assembly"),
             TokenReq::Either(a, b) => format!("{:?} or {:?}", a, b),
         };
         return write!(f, "{}", t);
@@ -65,6 +67,7 @@ impl TokenReq {
             TokenReq::Number => matches!(t, Token::Number(_)),
             TokenReq::Any => true,
             TokenReq::None => true,
+            TokenReq::Inline => matches!(t, Token::Inline(_)),
             TokenReq::Either(a, b) => t == a || t == b,
         };
     }
@@ -90,7 +93,7 @@ fn pattern_error_string(
     bad_index: usize,
 ) -> String {
     return format!(
-        "pattern:\n{} doesn't match tokens given\n:{:?}\nspecifically at index {} ",
+        "pattern:\n{}\ndoesn't match tokens given\n\n{:?}\nspecifically at index {} ",
         pattern_to_readable(pattern),
         tokens,
         bad_index
@@ -103,6 +106,9 @@ fn pattern_to_readable(pattern: &[(TokenReq, IndexReq)]) -> String {
 
 pub fn match_exact_cond(pattern: &[(TokenReq, IndexReq)], tokens: &[Token]) -> bool {
     return match_exact(pattern, tokens).is_ok();
+}
+pub fn match_exact_ok(pattern: &[(TokenReq, IndexReq)], tokens: &[Token]) -> Option<()> {
+    return match_exact(pattern, tokens).ok();
 }
 pub fn match_exact(pattern: &[(TokenReq, IndexReq)], tokens: &[Token]) -> Result<(), String> {
     let mut next = 0;

@@ -1,0 +1,61 @@
+remainder=0
+*
+function add a b
+*
+{
+	%load var_add_a
+	%add var_add_b
+}
+function sub a b
+*
+{
+	%load var_sub_a
+	%subt var_sub_b
+}
+function div a b
+counter=0
+*
+{
+    %beg, clear
+    .if(LESS a b) 
+	{   
+        remainder:=a
+        .ret(counter)
+
+    }
+    .else
+    {
+        counter=add (counter 1)
+        a=sub (a b)
+
+        %jump beg
+
+    }
+
+}
+
+function main
+x=0
+y=0
+*
+{   
+    %input
+    %store var_main_x
+
+    %input
+    %store var_main_y
+
+    .if(EQ y 0)
+    {
+        %halt
+    }
+    .noelse
+
+    div(x y)
+
+    %output
+    %load var_remainder
+    %output
+
+}
+

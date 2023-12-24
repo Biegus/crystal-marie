@@ -1,0 +1,42 @@
+*
+stack_function fib n
+a_input=0
+b_input=0
+a_res=0
+b_res=0
+temp=0
+*
+{
+    .if(EQ n 0)
+    {
+        .ret(0)
+    }
+    .else
+    {
+        .if(EQ n 1)
+        {
+            .ret(1)
+        }
+        .noelse
+    }
+    a_input = sub (n 1)
+    b_input = sub (n 2)
+
+    a_res= fib(a_input)
+   
+    b_res = fib(b_input)
+
+    add(a_res b_res)
+    .ret(return)
+
+}
+
+function main
+inp=0
+*
+{
+    inp = input()
+    fib(inp)
+    output(return)
+
+}
