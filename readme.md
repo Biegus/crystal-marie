@@ -19,7 +19,6 @@ download release https://github.com/Biegus/crystal-marie/releases/tag/0.9
 ```shell
 crystal-marie file.crmarie     
 ```
-*for linux release just strip the .exe from name*  
 
 ### Optional arguments
 
