@@ -32,9 +32,8 @@ note: Its recommended to include std.crmarie as lib file (its in main repo folde
 Without std.crmarie the stack_function feature won't work as it requires special functions defined in crystal-marie language
 
 ```shell
-crystla-marie.exe file.crmarie -l std.crmarie
+crystal-marie file.crmarie -l std.crmarie
 ```
-(you have to have std file in the same folder or point to whetever its is)  
 
 **`-o output_name.marie`** 
 specify output file name (by default it's a.marie) 

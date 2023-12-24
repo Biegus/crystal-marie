@@ -163,11 +163,11 @@ fn get_stack_function_call_text(
 
     let counter = context.push_counter();
 
-    let push_func = context.tree.find_fnc_with_name("push").unwrap(); //TODO this may crash , theres no error propagation in this part
+    let push_func = context.tree.find_fnc_with_name("push").unwrap(); //assuming tree is from parser it won't crash
     let arg_name = format!("var_push_{}", push_func.locals[0].name);
     let push_func = push_func.id;
 
-    let pop_func = context.tree.find_fnc_with_name("pop").unwrap().id; //TODO this may crash
+    let pop_func = context.tree.find_fnc_with_name("pop").unwrap().id; //same
     let mut builder = Builder::new();
 
     //normal function CANT call stack functions except for main
