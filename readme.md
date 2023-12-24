@@ -4,7 +4,7 @@ Compiles crysta-marie code to marie assembly code.
 
 What's marie assembly? Assembly for theoretical very simple cpu.  
 The only marie assembly intepreter i am aware of  is avaiable here (sadly online) 
-https://marie.js.org/
+https://marie.js.org/  
 I am not aware of existense of any other interpreter.
 
 What's crystal marie? 
@@ -13,7 +13,8 @@ For crystal-marie doc see *Crystal Marie Doc* header
 
 ## Usage 
 
-download release https://github.com/Biegus/crystal-marie/releases/tag/0.9 
+download release https://github.com/Biegus/crystal-marie/releases/tag/0.9  
+
 (if you want to build binaries yourself look at *Builing Compiler*)
 
 ```shell
