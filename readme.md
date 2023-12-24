@@ -53,7 +53,7 @@ cargo build --release
 **This docs are going to assume you included std.crmarie as lib**   
 
 ### Heavy commented examples
-to see outputs of examples see examples/from_readme/output 
+to see outputs of examples see examples/from_readme/output   
 note: the output will include all std functions, even the ones that are not used
 
 
@@ -163,7 +163,7 @@ They can't "call themselves" in direct
 The calls are carried only with variable assignent and jump. 
 
 - Stack function  
-They used the stack which allows them to call themselves in direct way
+They used the stack which allows them to call themselves in direct way  
 Stack function can only be called from other stack functions or from main.   
 You should only use them when you are gonna call stack functions or need recursion.   
 For recursion keep in mind program will not optimize for not putting not used locals on the stack.   
