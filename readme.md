@@ -141,7 +141,7 @@ temp=0
 {
     x=input()
     temp=fib(x)
-    output(x)
+    output(temp)
 
 }
 
